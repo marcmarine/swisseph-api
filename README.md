@@ -1,0 +1,30 @@
+# Swiss Ephemeris API
+
+A didactic implementation example of the [swisseph](https://github.com/mivion/swisseph) library in JavaScript for astronomical calculations.
+
+## Description
+
+This project demonstrates how to integrate and use the Swiss Ephemeris library through a JavaScript API using Hono/Express.
+
+## Get Started
+
+```bash
+npm install
+npm run dev
+```
+
+```bash
+open http://localhost:1234
+```
+
+## License
+
+This project uses the Swiss Ephemeris library, subject to [AGPL-3.0](LICENSE).
+
+## Credits
+
+Astrodienst AG for the original [Swiss Ephemeris](https://github.com/aloistr/swisseph) library.
+
+[mivion](https://github.com/mivion) for the JavaScript binding of Swiss Ephemeris.
+
+This project was bootstrapped with [Hono](https://hono.dev/docs/getting-started/nodejs).
