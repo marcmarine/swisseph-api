@@ -1,27 +1,30 @@
-FROM node:20-alpine AS base
+FROM oven/bun:latest AS base
+WORKDIR /usr/src/app
 
-FROM base AS builder
+FROM base AS install
 
-RUN apk add --no-cache g++ make python3 gcompat
-WORKDIR /app
+RUN apt-get update && \
+    apt-get install -y python3 make g++ && \
+    rm -rf /var/lib/apt/lists/*
+    
+RUN mkdir -p /temp/dev
+COPY package.json bun.lock /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
 
-COPY package*json tsconfig.json src ./
+RUN mkdir -p /temp/prod
+COPY package.json bun.lock /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile --production
 
-RUN npm ci && \
-    npm run build && \
-    npm prune --production
+RUN cd /temp/prod/node_modules/sweph && bun install
 
-FROM base AS runner
-WORKDIR /app
+FROM base AS prerelease
+COPY --from=install /temp/dev/node_modules node_modules
+COPY . .
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 hono
+FROM base AS release
+COPY --from=install /temp/prod/node_modules node_modules
+COPY --from=prerelease /usr/src/app/server.tsx .
 
-COPY --from=builder --chown=hono:nodejs /app/node_modules /app/node_modules
-COPY --from=builder --chown=hono:nodejs /app/dist /app/dist
-COPY --from=builder --chown=hono:nodejs /app/package.json /app/package.json
-
-USER hono
-EXPOSE 3000
-
-CMD ["node", "/app/dist/index.js"]
+USER bun
+EXPOSE 3000/tcp
+ENTRYPOINT [ "bun", "server.tsx" ]

@@ -4,17 +4,15 @@
   "description": "Swiss Ephemeris API for Node.js",
   "author": "Marc Mariné <shenobi@gmail.com>",
   "scripts": {
-    "dev": "tsx watch src/index.tsx",
-    "build": "tsc"
+    "prepare:sweph": "cd ./node_modules/sweph && bun install",
+    "dev": "bun --hot server.tsx"
   },
   "dependencies": {
-    "@hono/node-server": "^1.13.7",
-    "hono": "^4.6.16",
-    "swisseph": "^0.5.17"
+    "hono": "^4.8.5",
+    "sweph": "^2.10.3-b-1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.17",
-    "tsx": "^4.7.1",
+    "@types/bun": "^1.2.18",
     "typescript": "^5.7.3"
   }
 }
