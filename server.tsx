@@ -71,6 +71,17 @@ const route = app.get('/api/calculate/:seBodyNumber', (c) => {
 export type AppType = typeof route
 const client = hc<AppType>(`${process.env.API_URL}:${port}`)
 
+const Layout = (props: { children?: any }) => {
+  return (
+    <html>
+      <head>
+        <title>Swiss Ephemeris Online</title>
+      </head>
+      <body>{props.children}</body>
+    </html>
+  )
+}
+
 app.get('/', async (c) => {
   const date = c.req.query('date')
   const bodyNumber = c.req.query('body') ?? 0
@@ -90,52 +101,48 @@ app.get('/', async (c) => {
     sweph.get_planet_name(Number(number))
 
   return c.render(
-    <html>
-      <head>
-        <title>Swiss Ephemeris Online</title>
-      </head>
-      <body>
-        <header>
-          <h1>Swiss Ephemeris Online</h1>
-        </header>
-        <main>
-          <form>
-            <fieldset>
-              <input type="datetime-local" name="date" value={date} />
-              <select name="body">
-                {options.map((value) => (
-                  <option value={value} selected={value === Number(bodyNumber)}>
-                    {getPlanetName(value)}
-                  </option>
-                ))}
-              </select>
-              <input type="submit" value="Calculate" />
-            </fieldset>
-          </form>
-          <h2>{getPlanetName(bodyNumber)}</h2>
-          <h3>{new Date(data.date).toUTCString()}</h3>
-          <ul>
-            <li>sign: {signs[data.split_deg.sign]}</li>
-            <li>
-              dms: {data.split_deg.degree}º {data.split_deg.minute}'{' '}
-              {data.split_deg.second}"
-            </li>
-            <li>longitude: {data.calc_ut.data[0].toFixed(6)}</li>
-            <li>latitude: {data.calc_ut.data[1].toFixed(6)}</li>
-            <li>distance: {data.calc_ut.data[2].toFixed(6)}</li>
-            <li>speed longitude: {data.calc_ut.data[3].toFixed(6)}</li>
-            <li>speed latitude: {data.calc_ut.data[4].toFixed(6)}</li>
-            <li>speed distance: {data.calc_ut.data[5].toFixed(6)}</li>
-            <li>julian day: {data.julday.toFixed(2)}</li>
-          </ul>
-        </main>
-        <footer>
-          <a href="https://github.com/marcmarine/swisseph-api">
-            Repository on GitHub
-          </a>
-        </footer>
-      </body>
-    </html>
+    <Layout>
+      <header>
+        <h1>Swiss Ephemeris Online</h1>
+        <link href="https://unpkg.com/varvara-css" rel="stylesheet" />
+      </header>
+      <main>
+        <form>
+          <fieldset>
+            <input type="datetime-local" name="date" value={date} />
+            <select name="body">
+              {options.map((value) => (
+                <option value={value} selected={value === Number(bodyNumber)}>
+                  {getPlanetName(value)}
+                </option>
+              ))}
+            </select>
+            <input type="submit" value="Calculate" />
+          </fieldset>
+        </form>
+        <h2>{getPlanetName(bodyNumber)}</h2>
+        <h3>{new Date(data.date).toUTCString()}</h3>
+        <ul>
+          <li>sign: {signs[data.split_deg.sign]}</li>
+          <li>
+            dms: {data.split_deg.degree}º {data.split_deg.minute}'{' '}
+            {data.split_deg.second}"
+          </li>
+          <li>longitude: {data.calc_ut.data[0].toFixed(6)}</li>
+          <li>latitude: {data.calc_ut.data[1].toFixed(6)}</li>
+          <li>distance: {data.calc_ut.data[2].toFixed(6)}</li>
+          <li>speed longitude: {data.calc_ut.data[3].toFixed(6)}</li>
+          <li>speed latitude: {data.calc_ut.data[4].toFixed(6)}</li>
+          <li>speed distance: {data.calc_ut.data[5].toFixed(6)}</li>
+          <li>julian day: {data.julday.toFixed(2)}</li>
+        </ul>
+      </main>
+      <footer>
+        <a href="https://github.com/marcmarine/swisseph-api">
+          Repository on GitHub
+        </a>
+      </footer>
+    </Layout>
   )
 })
 
