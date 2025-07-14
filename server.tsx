@@ -1,4 +1,7 @@
+/** @jsxImportSource hono/jsx */
+
 import { Hono } from 'hono'
+import type { FC, PropsWithChildren } from 'hono/jsx'
 import { hc } from 'hono/client'
 import sweph from 'sweph'
 
@@ -71,13 +74,13 @@ const route = app.get('/api/calculate/:seBodyNumber', (c) => {
 export type AppType = typeof route
 const client = hc<AppType>(`${process.env.API_URL}:${port}`)
 
-const Layout = (props: { children?: any }) => {
+const Layout: FC = ({ children }: PropsWithChildren) => {
   return (
     <html>
       <head>
         <title>Swiss Ephemeris Online</title>
       </head>
-      <body>{props.children}</body>
+      <body>{children}</body>
     </html>
   )
 }
@@ -100,7 +103,7 @@ app.get('/', async (c) => {
   const getPlanetName = (number: string | number) =>
     sweph.get_planet_name(Number(number))
 
-  return c.render(
+  return c.html(
     <Layout>
       <header>
         <h1>Swiss Ephemeris Online</h1>
