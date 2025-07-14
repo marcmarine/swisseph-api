@@ -72,7 +72,7 @@ const route = app.get('/api/calculate/:seBodyNumber', (c) => {
 })
 
 export type AppType = typeof route
-const client = hc<AppType>(`${process.env.API_URL}:${port}`)
+const client = hc<AppType>(`http://localhost:${port}`)
 
 const Layout: FC = ({ children }: PropsWithChildren) => {
   return (
