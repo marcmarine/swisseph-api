@@ -10,12 +10,11 @@ This project demonstrates how to integrate and use the Swiss Ephemeris library t
 
 ```bash
 bun install
+bun prepare:sweph
 bun dev
 ```
 
-```bash
-open http://localhost:1234
-```
+Visit [http://localhost:1234](http://localhost:1234) to view the project.
 
 ### Docker
 
