@@ -43,21 +43,21 @@ const route = app.get('/api/calculate/:seBodyNumber', (c) => {
 
   const date = dateQueryParam ? new Date(dateQueryParam) : new Date()
 
-  // Conversion from day, month, year, time to Julian day.
-  const julday = sweph.julday(
+  const julday = sweph.utc_to_jd(
     date.getUTCFullYear(),
     date.getUTCMonth() + 1,
     date.getUTCDate(),
     date.getUTCHours(),
+    date.getUTCMinutes(),
+    0,
     sweph.constants.SE_GREG_CAL
   )
 
   const bodyNumber = Number(bodyParam) ?? sweph.constants.SE_SUN
 
-  // Computes the position of a planet for a specified Universal Time.
-  const calc_ut = sweph.calc_ut(julday, bodyNumber, sweph.constants.SEFLG_SPEED)
+  const [, jd_ut] = julday.data
+  const calc_ut = sweph.calc_ut(jd_ut, bodyNumber, sweph.constants.SEFLG_SPEED)
 
-  // Split degrees to sign, degrees, minutes, seconds of arc.
   const split_deg = sweph.split_deg(
     calc_ut.data[0],
     sweph.constants.SE_SPLIT_DEG_ZODIACAL
@@ -65,7 +65,7 @@ const route = app.get('/api/calculate/:seBodyNumber', (c) => {
 
   return c.json({
     date,
-    julday,
+    julday: jd_ut,
     calc_ut,
     split_deg,
   })
@@ -124,7 +124,7 @@ app.get('/', async (c) => {
           </fieldset>
         </form>
         <h2>{getPlanetName(bodyNumber)}</h2>
-        <h3>{new Date(data.date).toUTCString()}</h3>
+        <h3>{new Date().toUTCString()}</h3>
         <ul>
           <li>sign: {signs[data.split_deg.sign]}</li>
           <li>
