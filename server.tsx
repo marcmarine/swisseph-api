@@ -124,7 +124,7 @@ app.get('/', async (c) => {
           </fieldset>
         </form>
         <h2>{getPlanetName(bodyNumber)}</h2>
-        <h3>{new Date().toUTCString()}</h3>
+        <h3>{new Date(data.date).toUTCString()}</h3>
         <ul>
           <li>sign: {signs[data.split_deg.sign]}</li>
           <li>
