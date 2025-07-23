@@ -58,13 +58,14 @@ const route = app.get('/api/calculate/:seBodyNumber', (c) => {
   const [, jd_ut] = julday.data
   const calc_ut = sweph.calc_ut(jd_ut, bodyNumber, sweph.constants.SEFLG_SPEED)
 
+  const [longitude] = calc_ut.data
   const split_deg = sweph.split_deg(
-    calc_ut.data[0],
+    longitude,
     sweph.constants.SE_SPLIT_DEG_ZODIACAL
   )
 
   return c.json({
-    date,
+    date: date.toISOString(),
     julday: jd_ut,
     calc_ut,
     split_deg,
@@ -79,6 +80,7 @@ const Layout: FC = ({ children }: PropsWithChildren) => {
     <html>
       <head>
         <title>Swiss Ephemeris Online</title>
+        <link href="https://unpkg.com/varvara-css" rel="stylesheet" />
       </head>
       <body>{children}</body>
     </html>
@@ -107,7 +109,6 @@ app.get('/', async (c) => {
     <Layout>
       <header>
         <h1>Swiss Ephemeris Online</h1>
-        <link href="https://unpkg.com/varvara-css" rel="stylesheet" />
       </header>
       <main>
         <form>
