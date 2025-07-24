@@ -23,40 +23,37 @@ const bodies = [
 ]
 
 const signs = [
-  'aries',
-  'taurus',
-  'gemini',
-  'cancer',
-  'leo',
-  'virgo',
-  'libra',
-  'scorpio',
-  'sagittarius',
-  'capricorn',
-  'aquarius',
-  'pisces',
+  'Aries',
+  'Taurus',
+  'Gemini',
+  'Cancer',
+  'Leo',
+  'Virgo',
+  'Libra',
+  'Scorpio',
+  'Sagittarius',
+  'Capricorn',
+  'Aquarius',
+  'Pisces',
 ]
 
-const route = app
-  .get('/api/ephemeris/:seBodyNumber', (c) => {
-    const bodyParam = c.req.param('seBodyNumber')
-    const dateQueryParam = c.req.query('date')
+const route = app.get('/api/ephemeris', (c) => {
+  const dateQueryParam = c.req.query('date')
 
-    const date = dateQueryParam ? new Date(dateQueryParam) : new Date()
+  const date = dateQueryParam ? new Date(dateQueryParam) : new Date()
 
-    const julday = sweph.utc_to_jd(
-      date.getUTCFullYear(),
-      date.getUTCMonth() + 1,
-      date.getUTCDate(),
-      date.getUTCHours(),
-      date.getUTCMinutes(),
-      0,
-      sweph.constants.SE_GREG_CAL
-    )
+  const julday = sweph.utc_to_jd(
+    date.getUTCFullYear(),
+    date.getUTCMonth() + 1,
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    0,
+    sweph.constants.SE_GREG_CAL
+  )
 
-    const bodyNumber = Number(bodyParam) ?? sweph.constants.SE_SUN
-
-    const [, jd_ut] = julday.data
+  const [, jd_ut] = julday.data
+  const result = bodies.map((bodyNumber) => {
     const calc_ut = sweph.calc_ut(
       jd_ut,
       bodyNumber,
@@ -69,62 +66,19 @@ const route = app
       sweph.constants.SE_SPLIT_DEG_ZODIACAL
     )
 
-    return c.json({
-      date: date.toISOString(),
-      julday: jd_ut,
+    return {
+      ipl: bodyNumber,
       calc_ut,
       split_deg,
-    })
+    }
   })
-  .get('/api/ephemeris', (c) => {
-    const dateQueryParam = c.req.query('date')
 
-    const date = dateQueryParam ? new Date(dateQueryParam) : new Date()
-
-    const julday = sweph.utc_to_jd(
-      date.getUTCFullYear(),
-      date.getUTCMonth() + 1,
-      date.getUTCDate(),
-      date.getUTCHours(),
-      date.getUTCMinutes(),
-      0,
-      sweph.constants.SE_GREG_CAL
-    )
-
-    const [, jd_ut] = julday.data
-    const data = bodies.reduce(
-      (acc, value) => {
-        const calc_ut = sweph.calc_ut(jd_ut, value, sweph.constants.SEFLG_SPEED)
-
-        const [longitude] = calc_ut.data
-        const split_deg = sweph.split_deg(
-          longitude,
-          sweph.constants.SE_SPLIT_DEG_ZODIACAL
-        )
-
-        return {
-          ...acc,
-          [value]: {
-            calc_ut,
-            split_deg,
-          },
-        }
-      },
-      {} as Record<
-        number,
-        {
-          calc_ut: sweph.Calc
-          split_deg: sweph.SplitDeg
-        }
-      >
-    )
-
-    return c.json({
-      date: date.toISOString(),
-      julday: jd_ut,
-      result: data,
-    })
+  return c.json({
+    date: date.toISOString(),
+    julday: jd_ut,
+    result,
   })
+})
 
 export type AppType = typeof route
 const client = hc<AppType>(`http://localhost:${port}`)
@@ -142,16 +96,14 @@ const Layout: FC = ({ children }: PropsWithChildren) => {
 }
 
 app.get('/', async (c) => {
-  const date = c.req.query('date')
-  const bodyNumber = c.req.query('body') ?? 0
+  const date = c.req.query('date') ?? new Date().toISOString()
 
   const response = await client.api.ephemeris.$get({
     query: {
       date,
     },
   })
-  const ephe = await response.json()
-  const data = ephe.result[bodyNumber as number]
+  const ephemeris = await response.json()
 
   const getPlanetName = (number: string | number) =>
     sweph.get_planet_name(Number(number))
@@ -159,43 +111,51 @@ app.get('/', async (c) => {
   return c.html(
     <Layout>
       <header>
-        <h1>Swiss Ephemeris Online</h1>
+        <h1>Ephemeris</h1>
       </header>
       <main>
-        <form>
-          <fieldset>
-            <input type="datetime-local" name="date" value={date} />
-            <select name="body">
-              {bodies.map((value) => (
-                <option value={value} selected={value === Number(bodyNumber)}>
-                  {getPlanetName(value)}
-                </option>
-              ))}
-            </select>
-            <input type="submit" value="Calculate" />
-          </fieldset>
+        <form class="va-button-group va-button-group--horizontal">
+          <input
+            class="va-input"
+            type="datetime-local"
+            name="date"
+            value={date}
+          />
+          <input class="va-input" type="submit" value="Calculate" />
         </form>
-        <h2>{getPlanetName(bodyNumber)}</h2>
-        <h3>{new Date(ephe.date).toUTCString()}</h3>
-        <ul>
-          <li>sign: {signs[data.split_deg.sign]}</li>
-          <li>
-            dms: {data.split_deg.degree}º {data.split_deg.minute}'{' '}
-            {data.split_deg.second}"
-          </li>
-          <li>longitude: {data.calc_ut.data[0].toFixed(6)}</li>
-          <li>latitude: {data.calc_ut.data[1].toFixed(6)}</li>
-          <li>distance: {data.calc_ut.data[2].toFixed(6)}</li>
-          <li>speed longitude: {data.calc_ut.data[3].toFixed(6)}</li>
-          <li>speed latitude: {data.calc_ut.data[4].toFixed(6)}</li>
-          <li>speed distance: {data.calc_ut.data[5].toFixed(6)}</li>
-          <li>julian day: {ephe.julday.toFixed(2)}</li>
-        </ul>
+        <h2>{new Date(date).toUTCString()} (UTC)</h2>
+        <table class="va-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Sign</th>
+              <th>DMS</th>
+              <th>Longitude</th>
+              <th>Speed Longitude</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ephemeris.result.map((data) => (
+              <tr>
+                <td>{getPlanetName(data.ipl)}</td>
+                <td>{signs[data.split_deg.sign]}</td>
+                <td>
+                  {data.split_deg.degree}° {data.split_deg.minute}'{' '}
+                  {data.split_deg.second}"
+                </td>
+                <td>{data.calc_ut.data[0].toFixed(6)}</td>
+                <td>{data.calc_ut.data[3].toFixed(6)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </main>
       <footer>
-        <a href="https://github.com/marcmarine/swisseph-api">
-          Repository on GitHub
-        </a>
+        <p>
+          <a href="https://github.com/marcmarine/swisseph-api" class="va-link">
+            Repository on GitHub
+          </a>
+        </p>
       </footer>
     </Layout>
   )
