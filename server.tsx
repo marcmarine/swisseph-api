@@ -22,6 +22,22 @@ const bodies = [
   sweph.constants.SE_PLUTO,
 ]
 
+const bodieSymbol = ['☉', '☽', '☿', '♀', '♂', '♃', '♄', '♅', '♆', '♇']
+const signSymbol = [
+  '♈︎',
+  '♉︎',
+  '♊︎',
+  '♋︎',
+  '♌︎',
+  '♍︎',
+  '♎︎',
+  '♏︎',
+  '♐︎',
+  '♑︎',
+  '♒︎',
+  '♓︎',
+]
+
 const signs = [
   'Aries',
   'Taurus',
@@ -135,18 +151,25 @@ app.get('/', async (c) => {
             </tr>
           </thead>
           <tbody>
-            {ephemeris.result.map((data) => (
-              <tr>
-                <td>{getPlanetName(data.ipl)}</td>
-                <td>{signs[data.split_deg.sign]}</td>
-                <td>
-                  {data.split_deg.degree}° {data.split_deg.minute}'{' '}
-                  {data.split_deg.second}"
-                </td>
-                <td>{data.calc_ut.data[0].toFixed(6)}</td>
-                <td>{data.calc_ut.data[3].toFixed(6)}</td>
-              </tr>
-            ))}
+            {ephemeris.result.map((data) => {
+              const speedLongitude = Number(data.calc_ut.data[3].toFixed(6))
+              return (
+                <tr>
+                  <td>
+                    {getPlanetName(data.ipl)} {bodieSymbol[data.ipl]}
+                  </td>
+                  <td>{signs[data.split_deg.sign]} </td>
+                  <td>
+                    {data.split_deg.degree}
+                    {signSymbol[data.split_deg.sign]}
+                    {data.split_deg.minute}'{data.split_deg.second}"
+                    {Boolean(speedLongitude < 0) && 'r'}
+                  </td>
+                  <td>{data.calc_ut.data[0].toFixed(6)}</td>
+                  <td>{speedLongitude}</td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </main>
