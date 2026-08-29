@@ -16,9 +16,9 @@ FROM oven/bun:latest
 WORKDIR /app
 
 COPY --from=deps /app/node_modules node_modules
-COPY server.tsx .
+COPY server.ts .
 
 USER bun
 
 EXPOSE 1234
-CMD ["bun", "server.tsx"]
+CMD ["bun", "server.ts"]

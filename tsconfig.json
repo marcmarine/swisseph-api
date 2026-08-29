@@ -1,10 +1,9 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "types": ["bun-types"],
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
-  }
+	"compilerOptions": {
+		"target": "ESNext",
+		"moduleResolution": "Bundler",
+		"strict": true,
+		"skipLibCheck": true,
+		"types": ["bun-types"]
+	}
 }

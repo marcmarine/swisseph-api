@@ -1,18 +1,17 @@
 {
-  "name": "swisseph-api",
-  "type": "module",
-  "description": "Swiss Ephemeris API for Node.js",
-  "author": "Marc Mariné <shenobi@gmail.com>",
-  "scripts": {
-    "prepare:sweph": "cd ./node_modules/sweph && bun install",
-    "dev": "bun --hot server.tsx"
-  },
-  "dependencies": {
-    "hono": "^4.8.5",
-    "sweph": "^2.10.3-b-1"
-  },
-  "devDependencies": {
-    "@types/bun": "^1.2.19",
-    "typescript": "^5.8.3"
-  }
+	"name": "swisseph-api",
+	"type": "module",
+	"description": "Swiss Ephemeris API for Node.js",
+	"author": "Marc Mariné <shenobi@gmail.com>",
+	"scripts": {
+		"prepare:sweph": "cd ./node_modules/sweph && bun install",
+		"dev": "bun --hot server.ts"
+	},
+	"dependencies": {
+		"sweph": "^2.10.3-b-1"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.2.19",
+		"typescript": "^5.8.3"
+	}
 }
