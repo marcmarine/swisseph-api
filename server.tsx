@@ -1,3 +1,4 @@
+import { renderToReadableStream } from "react-dom/server";
 import sweph from "sweph";
 
 const port = 1234;
@@ -96,65 +97,77 @@ function escapeHtml(value: string): string {
 		.replaceAll("'", "&#39;");
 }
 
-function renderPage(date: string, ephemeris: ReturnType<typeof getEphemeris>) {
-	const rows = ephemeris.result
-		.map((data) => {
-			const speedLongitude = Number(data.calc_ut.data[3].toFixed(6));
-			return `<tr>
-					<td>${getPlanetName(data.ipl)} ${bodieSymbol[data.ipl]}</td>
-					<td>${signs[data.split_deg.sign]}</td>
-					<td>${data.split_deg.degree}${signSymbol[data.split_deg.sign]}${data.split_deg.minute}'${data.split_deg.second}"${speedLongitude < 0 ? "r" : ""}</td>
-					<td>${data.calc_ut.data[0].toFixed(6)}</td>
-					<td>${speedLongitude}</td>
-				</tr>`;
-		})
-		.join("");
-
-	return `<!doctype html>
-<html>
-	<head>
-		<title>Swiss Ephemeris Online</title>
-		<link href="https://unpkg.com/varvara-css" rel="stylesheet" />
-	</head>
-	<body>
-		<header>
-			<h1>Ephemeris</h1>
-		</header>
-		<main>
-			<form class="va-button-group va-button-group--horizontal">
-				<input
-					class="va-input"
-					type="datetime-local"
-					name="date"
-					value="${escapeHtml(date)}"
-				/>
-				<input class="va-input" type="submit" value="Calculate" />
-			</form>
-			<h2>${new Date(date).toUTCString()} (UTC)</h2>
-			<table class="va-table">
-				<thead>
-					<tr>
-						<th></th>
-						<th>Sign</th>
-						<th>DMS</th>
-						<th>Longitude</th>
-						<th>Speed Longitude</th>
-					</tr>
-				</thead>
-				<tbody>
-					${rows}
-				</tbody>
-			</table>
-		</main>
-		<footer>
-			<p>
-				<a href="https://github.com/marcmarine/swisseph-api" class="va-link">
-					Repository on GitHub
-				</a>
-			</p>
-		</footer>
-	</body>
-</html>`;
+function Page(props: {
+	date: string;
+	ephemeris: ReturnType<typeof getEphemeris>;
+}) {
+	return (
+		<html lang="en">
+			<head>
+				<title>Swiss Ephemeris Online</title>
+				<link href="https://unpkg.com/varvara-css" rel="stylesheet" />
+			</head>
+			<body>
+				<header>
+					<h1>Ephemeris</h1>
+				</header>
+				<main>
+					<form className="va-button-group va-button-group--horizontal">
+						<input
+							className="va-input"
+							type="datetime-local"
+							name="date"
+							value={escapeHtml(props.date)}
+						/>
+						<input className="va-input" type="submit" value="Calculate" />
+					</form>
+					<h2>{new Date(props.date).toUTCString()} (UTC)</h2>
+					<table className="va-table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Sign</th>
+								<th>DMS</th>
+								<th>Longitude</th>
+								<th>Speed Longitude</th>
+							</tr>
+						</thead>
+						<tbody>
+							{props.ephemeris.result.map((data) => {
+								const speedLongitude = Number(data.calc_ut.data[3].toFixed(6));
+								return (
+									<tr key={data.ipl}>
+										<td>
+											{getPlanetName(data.ipl)} {bodieSymbol[data.ipl]}
+										</td>
+										<td>{signs[data.split_deg.sign]}</td>
+										<td>
+											{data.split_deg.degree}
+											{signSymbol[data.split_deg.sign]}
+											{data.split_deg.minute}'{data.split_deg.second}"
+											{speedLongitude < 0 ? "r" : ""}
+										</td>
+										<td>{data.calc_ut.data[0].toFixed(6)}</td>
+										<td>{speedLongitude}</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+				</main>
+				<footer>
+					<p>
+						<a
+							href="https://github.com/marcmarine/swisseph-api"
+							className="va-link"
+						>
+							Repository on GitHub
+						</a>
+					</p>
+				</footer>
+			</body>
+		</html>
+	);
 }
 
 const server = Bun.serve({
@@ -164,12 +177,15 @@ const server = Bun.serve({
 			const date = new URL(req.url).searchParams.get("date");
 			return Response.json(getEphemeris(date));
 		},
-		"/": (req) => {
+		"/": async (req) => {
 			const date =
 				new URL(req.url).searchParams.get("date") ?? new Date().toISOString();
 			const ephemeris = getEphemeris(date);
+			const stream = await renderToReadableStream(
+				<Page date={date} ephemeris={ephemeris} />,
+			);
 
-			return new Response(renderPage(date, ephemeris), {
+			return new Response(stream, {
 				headers: { "Content-Type": "text/html; charset=utf-8" },
 			});
 		},

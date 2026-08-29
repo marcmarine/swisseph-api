@@ -5,13 +5,17 @@
 	"author": "Marc Mariné <shenobi@gmail.com>",
 	"scripts": {
 		"prepare:sweph": "cd ./node_modules/sweph && bun install",
-		"dev": "bun --hot server.ts"
+		"dev": "bun --hot server.tsx"
 	},
 	"dependencies": {
+		"react": "^19.2.8",
+		"react-dom": "^19.2.8",
 		"sweph": "^2.10.3-b-1"
 	},
 	"devDependencies": {
 		"@types/bun": "^1.2.19",
+		"@types/react": "^19.2.18",
+		"@types/react-dom": "^19.2.5",
 		"typescript": "^5.8.3"
 	}
 }
