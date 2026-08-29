@@ -46,8 +46,6 @@ const signs = [
 	"Pisces",
 ];
 
-sweph.set_ephe_path("ephemeris");
-
 function getEphemeris(dateQueryParam: string | null) {
 	const date = dateQueryParam ? new Date(dateQueryParam) : new Date();
 
