@@ -1,10 +1,10 @@
 # Swiss Ephemeris API
 
-A didactic implementation example of the [swisseph](https://github.com/timotejroiko/sweph) library in JavaScript for astronomical calculations.
+An example implementation of the [swisseph](https://github.com/timotejroiko/sweph) library in JavaScript and TypeScript for astronomical calculations.
 
 ## Description
 
-This project demonstrates how to integrate and use the Swiss Ephemeris library through a JavaScript API using Hono/Express.
+This project demonstrates how to integrate and use the Swiss Ephemeris library through a JavaScript API using modern tools.
 
 ## Get Started
 
@@ -40,4 +40,4 @@ Astrodienst AG for the original [Swiss Ephemeris](https://github.com/aloistr/swi
 
 [timotejroiko](https://github.com/timotejroiko) for the JavaScript binding of Swiss Ephemeris.
 
-This project was bootstrapped with [Hono](hhttps://hono.dev/docs/getting-started/bun).
+This project was bootstrapped with [Bun](https://bun.com/docs/installation).
