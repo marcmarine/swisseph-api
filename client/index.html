@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Swiss Ephemeris — Client</title>
     <link href="https://unpkg.com/varvara-css" rel="stylesheet" />
+    <script type="importmap">
+      {
+        "imports": {
+          "@swisseph/browser": "./vendor/swisseph-browser/swisseph-browser.js"
+        }
+      }
+    </script>
   </head>
   <body>
     <header>
@@ -42,13 +49,6 @@
         </a>
       </p>
     </footer>
-    <script type="importmap">
-      {
-        "imports": {
-          "@swisseph/browser": "./vendor/swisseph-browser/swisseph-browser.js"
-        }
-      }
-    </script>
     <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
