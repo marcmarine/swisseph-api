@@ -13,6 +13,7 @@ bun install
 bun dev
 ```
 
+> [!IMPORTANT]
 > **Note for Intel-based Macs:** If you are using a Mac without an Apple Silicon chip, you need to rebuild the native module manually because `@swisseph/node` does not provide a prebuild for this architecture:
 >
 > ```bash
@@ -34,7 +35,7 @@ Available scripts:
 
 ### Browser Example
 
-The `client/dist` folder contains a built example of using the **Swiss Ephemeris directly in the browser** via [`@swisseph/browser`](https://github.com/swisseph-js/swisseph). It demonstrates how to perform astronomical calculations on the client side without a server 🚀.
+The `client` folder contains a built example of using the **Swiss Ephemeris directly in the browser** via [`@swisseph/browser`](https://github.com/swisseph-js/swisseph). It demonstrates how to perform astronomical calculations on the client side without a server 🚀.
 
 ### Docker
 
