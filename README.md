@@ -1,6 +1,6 @@
 # Swiss Ephemeris API
 
-An example implementation of the [swisseph](https://github.com/timotejroiko/sweph) library in JavaScript and TypeScript for astronomical calculations.
+An example implementation of the [Swiss Ephemeris](https://github.com/aloistr/swisseph) library in JavaScript and TypeScript for astronomical calculations.
 
 ## Description
 
@@ -30,6 +30,11 @@ Run the container:
 docker run -p 3000:3000 swisseph-api
 ```
 
+## Versions
+
+- **Current**: Uses [@swisseph/node](https://github.com/swisseph-js/swisseph) for astronomical calculations.
+- **v1 (sweph)**: The first version used the [sweph](https://github.com/timotejroiko/sweph) library by [timotejroiko](https://github.com/timotejroiko). See the [`sweph-version`](https://github.com/marcmarine/swisseph-api/tree/sweph-version) branch.
+
 ## License
 
 This project uses the Swiss Ephemeris library, subject to [AGPL-3.0](LICENSE).
@@ -38,6 +43,8 @@ This project uses the Swiss Ephemeris library, subject to [AGPL-3.0](LICENSE).
 
 Astrodienst AG for the original [Swiss Ephemeris](https://github.com/aloistr/swisseph) library.
 
-[timotejroiko](https://github.com/timotejroiko) for the JavaScript binding of Swiss Ephemeris.
+[timotejroiko](https://github.com/timotejroiko) for the original JavaScript binding of Swiss Ephemeris.
+
+[@swisseph/node](https://github.com/swisseph-js/swisseph) for the current JavaScript/TypeScript binding of Swiss Ephemeris.
 
 This project was bootstrapped with [Bun](https://bun.com/docs/installation).
