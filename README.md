@@ -10,7 +10,6 @@ This project demonstrates how to integrate and use the Swiss Ephemeris library t
 
 ```bash
 bun install
-bun prepare:sweph
 bun dev
 ```
 
