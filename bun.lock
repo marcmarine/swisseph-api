@@ -5,9 +5,9 @@
     "": {
       "name": "swisseph-api",
       "dependencies": {
+        "@swisseph/node": "^1.0.0",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
-        "sweph": "^2.10.3-b-1",
       },
       "devDependencies": {
         "@types/bun": "^1.2.19",
@@ -18,6 +18,10 @@
     },
   },
   "packages": {
+    "@swisseph/core": ["@swisseph/core@1.3.1", "", {}, "sha512-3Mjxss06//F3JYhMCKL5OdFduw0RoHg+cXLFA8/744G9zVqpDrE89F233i3w8XF1mqTCyZV9593qhWN/xqdN0w=="],
+
+    "@swisseph/node": ["@swisseph/node@1.3.1", "", { "dependencies": { "@swisseph/core": "1.3.1", "node-addon-api": "^7.1.0", "node-gyp-build": "^4.8.4" } }, "sha512-wsk3lsHPoswpbytFiEJEmRHGrOVT0sLx6WMYCChuISapxaT2CivaVvs6AS2J+ywyEy7bArEoAPlgE6Rf5oh/yw=="],
+
     "@types/bun": ["@types/bun@1.2.19", "", { "dependencies": { "bun-types": "1.2.19" } }, "sha512-d9ZCmrH3CJ2uYKXQIUuZ/pUnTqIvLDS0SK7pFmbx8ma+ziH/FRMoAq5bYpRG7y+w1gl+HgyNZbtqgMq4W4e2Lg=="],
 
     "@types/node": ["@types/node@20.19.7", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-1GM9z6BJOv86qkPvzh2i6VW5+VVrXxCLknfmTkWEqz+6DqosiY28XUWCTmBcJ0ACzKqx/iwdIREfo1fwExIlkA=="],
@@ -30,15 +34,15 @@
 
     "csstype": ["csstype@3.2.3", "", {}, "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="],
 
-    "node-addon-api": ["node-addon-api@8.4.0", "", {}, "sha512-D9DI/gXHvVmjHS08SVch0Em8G5S1P+QWtU31appcKT/8wFSPRcdHadIFSAntdMMVM5zz+/DL+bL/gz3UDppqtg=="],
+    "node-addon-api": ["node-addon-api@7.1.1", "", {}, "sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ=="],
+
+    "node-gyp-build": ["node-gyp-build@4.8.4", "", { "bin": { "node-gyp-build": "bin.js", "node-gyp-build-optional": "optional.js", "node-gyp-build-test": "build-test.js" } }, "sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ=="],
 
     "react": ["react@19.2.8", "", {}, "sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw=="],
 
     "react-dom": ["react-dom@19.2.8", "", { "dependencies": { "scheduler": "^0.27.0" }, "peerDependencies": { "react": "^19.2.8" } }, "sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ=="],
 
     "scheduler": ["scheduler@0.27.0", "", {}, "sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q=="],
-
-    "sweph": ["sweph@2.10.3-b-1", "", { "dependencies": { "node-addon-api": "^8.3.1" } }, "sha512-5dgBQv+h+wBvD2HQHplgRJaQ8A1m5EAfemWiocc/CdVtO8VwKly3OL0v0TUf0IKLOkLFk6IT2AzyyJCrec5yJQ=="],
 
     "typescript": ["typescript@5.8.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ=="],
 

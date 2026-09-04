@@ -4,13 +4,12 @@
 	"description": "Swiss Ephemeris API for Node.js",
 	"author": "Marc Mariné <shenobi@gmail.com>",
 	"scripts": {
-		"prepare:sweph": "cd ./node_modules/sweph && bun install",
 		"dev": "bun --hot server.tsx"
 	},
 	"dependencies": {
+		"@swisseph/node": "^1.0.0",
 		"react": "^19.2.8",
-		"react-dom": "^19.2.8",
-		"sweph": "^2.10.3-b-1"
+		"react-dom": "^19.2.8"
 	},
 	"devDependencies": {
 		"@types/bun": "^1.2.19",
