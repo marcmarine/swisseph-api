@@ -16,7 +16,7 @@ if (!result.success) {
 
 await mkdir("./dist/vendor/swisseph-browser", { recursive: true });
 await cp(
-	"./node_modules/@swisseph/browser/dist",
+	"../node_modules/@swisseph/browser/dist",
 	"./dist/vendor/swisseph-browser",
 	{
 		recursive: true,
