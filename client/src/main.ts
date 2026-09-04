@@ -80,17 +80,36 @@ function $<T extends Element = HTMLElement>(
 const statusEl = $("#status");
 const tableEl = $<HTMLTableElement>("#ephemeris-table");
 const tbodyEl = $("tbody", tableEl);
+const dateDisplayEl = $<HTMLHeadingElement>("#date-display");
 const dateInput = $<HTMLInputElement>("#date-input");
 const form = $<HTMLFormElement>("#date-form");
 
 const swe = new SwissEphemeris();
 
+function getDateParamFromUrl(): string | null {
+	return new URL(window.location.href).searchParams.get("date");
+}
+
+function updateUrl(value: string, replace: boolean) {
+	const url = new URL(window.location.href);
+	url.searchParams.set("date", value);
+	const method = replace ? "replaceState" : "pushState";
+	window.history[method](null, "", url);
+}
+
 async function init() {
 	await swe.init();
 	statusEl.hidden = true;
 	tableEl.hidden = false;
-	dateInput.value = new Date().toISOString().slice(0, 16);
-	render(new Date());
+
+	const now = new Date();
+	const localNow = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+		.toISOString()
+		.slice(0, 16);
+
+	dateInput.value = getDateParamFromUrl() ?? localNow;
+	render(dateInput.value ? new Date(dateInput.value) : new Date());
+	updateUrl(dateInput.value, true);
 }
 
 function render(date: Date) {
@@ -112,12 +131,23 @@ function render(date: Date) {
     `;
 		tbodyEl.appendChild(row);
 	});
+
+	dateDisplayEl.textContent = `${date.toUTCString()} (UTC)`;
+	dateDisplayEl.hidden = false;
 }
 
 form.addEventListener("submit", (event: SubmitEvent) => {
 	event.preventDefault();
 	const value = dateInput.value ? new Date(dateInput.value) : new Date();
 	render(value);
+	updateUrl(dateInput.value, false);
+});
+
+window.addEventListener("popstate", () => {
+	const value = getDateParamFromUrl();
+	if (!value) return;
+	dateInput.value = value;
+	render(new Date(value));
 });
 
 init();
