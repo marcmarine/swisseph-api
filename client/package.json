@@ -1,0 +1,19 @@
+{
+	"name": "swisseph-client",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "bun --hot ./index.html",
+		"build": "bun build ./index.html --outdir dist --minify"
+	},
+	"dependencies": {
+		"@swisseph/browser": "^1.0.0"
+	},
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^7"
+	}
+}

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Swiss Ephemeris — Client</title>
+    <link href="https://unpkg.com/varvara-css" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <h1>Ephemeris (client-side, WASM)</h1>
+    </header>
+    <main>
+      <form id="date-form" class="va-button-group va-button-group--horizontal">
+        <input
+          class="va-input"
+          type="datetime-local"
+          name="date"
+          id="date-input"
+        />
+        <input class="va-input" type="submit" value="Calculate" />
+      </form>
+      <p id="status">Loading Swiss Ephemeris…</p>
+      <table class="va-table" id="ephemeris-table" hidden>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Sign</th>
+            <th>DMS</th>
+            <th>Longitude</th>
+            <th>Speed Longitude</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+    <footer>
+      <p>
+        <a href="https://github.com/marcmarine/swisseph-api" class="va-link">
+          Repository on GitHub
+        </a>
+      </p>
+    </footer>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
