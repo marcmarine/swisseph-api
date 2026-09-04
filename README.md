@@ -13,7 +13,28 @@ bun install
 bun dev
 ```
 
+> **Note for Intel-based Macs:** If you are using a Mac without an Apple Silicon chip, you need to rebuild the native module manually because `@swisseph/node` does not provide a prebuild for this architecture:
+>
+> ```bash
+> cd node_modules/@swisseph/node && npm run build
+> ```
+
 Visit [http://localhost:1234](http://localhost:1234) to view the project.
+
+### Workspaces
+
+This project uses [Bun workspaces](https://bun.sh/docs/install/workspaces). The root contains the server, and the `client` folder contains a browser-based example.
+
+Available scripts:
+
+- `bun dev` — Start the server in development mode.
+- `bun run dev:client` — Start the client workspace in development mode. _(Due to a Bun workaround, use `start:client` for now.)_
+- `bun run dev:all` — Start both the server and client in parallel.
+- `bun run start:client` — Build and serve the client workspace.
+
+### Browser Example
+
+The `client/dist` folder contains a built example of using the **Swiss Ephemeris directly in the browser** via [`@swisseph/browser`](https://github.com/swisseph-js/swisseph). It demonstrates how to perform astronomical calculations on the client side without a server 🚀.
 
 ### Docker
 
