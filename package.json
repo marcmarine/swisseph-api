@@ -4,7 +4,11 @@
 	"description": "Swiss Ephemeris API for Node.js",
 	"author": "Marc Mariné <shenobi@gmail.com>",
 	"scripts": {
-		"dev": "bun --hot server.tsx"
+		"dev": "bun --hot server.tsx",
+		"dev:client": "bun run --filter swisseph-client dev",
+		"dev:all": "bun run --parallel dev dev:client",
+		"build:client": "bun run --filter swisseph-client build",
+		"start:client": "bun run build:client && bun run --filter swisseph-client start"
 	},
 	"dependencies": {
 		"@swisseph/node": "^1.0.0",
@@ -16,5 +20,9 @@
 		"@types/react": "^19.2.18",
 		"@types/react-dom": "^19.2.5",
 		"typescript": "^5.8.3"
-	}
+	},
+	"private": true,
+	"workspaces": [
+		"client"
+	]
 }

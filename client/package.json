@@ -5,7 +5,8 @@
 	"private": true,
 	"scripts": {
 		"dev": "bun --hot ./index.html",
-		"build": "bun build ./index.html --outdir dist --minify"
+		"build": "bun run build.ts",
+		"start": "bunx serve dist"
 	},
 	"dependencies": {
 		"@swisseph/browser": "^1.0.0"
